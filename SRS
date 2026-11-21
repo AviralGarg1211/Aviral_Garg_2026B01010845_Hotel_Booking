@@ -1,0 +1,6 @@
+Software Requirements Specification (SRS)
+Introduction: The project focuses on cleaning and preprocessing the Hotel Booking dataset using Python.
+Functional Requirements: Handling missing values, removing duplicates, correcting data types, removing unnecessary columns, and creating new features.
+Hardware Requirements: A computer or laptop with at least 4 GB RAM.
+Software Requirements: Python, Pandas, NumPy, and Google Colab or Jupyter Notebook or Code editor with suitable extensions like VS Code.
+Expected Output: A clean and organized dataset saved as Hotel_Booking_Cleaned.csv.
