@@ -253,7 +253,6 @@ for column in non_negative_columns:
 
         print(f"Negative values in {column}: {invalid_count}")
 
-
 # 11. FEATURE ENGINEERING
 
 print("\nFEATURE ENGINEERING")
@@ -329,3 +328,171 @@ print("\nDATA CLEANING COMPLETED SUCCESSFULLY!")
 
 print("Cleaned dataset saved as:")
 print("Hotel_Booking_Cleaned.csv")
+
+# DATA ANALYSIS USING PANDAS AND NUMPY
+
+print("\n------------HOTEL BOOKING DATA ANALYSIS------------")
+
+
+# GENERAL DATASET ANALYSIS
+
+print("\nGENERAL DATASET ANALYSIS")
+
+print("Total Bookings:", len(clean_df))
+print("Total Columns:", clean_df.shape[1])
+print("Total Hotels:", clean_df["hotel"].nunique())
+
+# HOTEL-WISE BOOKING ANALYSIS
+
+print("\nHOTEL-WISE BOOKING ANALYSIS")
+
+hotel_analysis = clean_df["hotel"].value_counts()
+
+print("\nBookings by Hotel:")
+print(hotel_analysis)
+
+print("\nMost Booked Hotel:")
+print(hotel_analysis.idxmax())
+
+# BOOKING CANCELLATION ANALYSIS
+
+print("\nBOOKING CANCELLATION ANALYSIS")
+
+cancellation_count = clean_df["is_canceled"].value_counts().sort_index()
+
+print("\nCancellation Count:")
+print(cancellation_count)
+
+print("\nCancellation Percentage:")
+print(clean_df["is_canceled"].value_counts(normalize=True) * 100)
+
+print("\nTotal Cancelled Bookings:",
+      (clean_df["is_canceled"] == 1).sum())
+
+print("Total Non-Cancelled Bookings:",
+      (clean_df["is_canceled"] == 0).sum())
+
+print("Overall Cancellation Rate:",
+      round(clean_df["is_canceled"].mean() * 100, 2), "%")
+
+# MONTH-WISE BOOKING ANALYSIS
+
+print("\nMONTH-WISE BOOKING ANALYSIS")
+
+monthly_analysis = (
+    clean_df["arrival_date_month"]
+    .value_counts()
+    .reindex(months, fill_value=0)
+)
+
+print("\nBookings in Each Month:")
+print(monthly_analysis)
+
+print("\nMonth with Maximum Bookings:")
+print(monthly_analysis.idxmax())
+
+print("\nMonth with Minimum Bookings:")
+print(monthly_analysis.idxmin())
+
+
+# COUNTRY-WISE BOOKING ANALYSIS
+
+print("\nCOUNTRY-WISE BOOKING ANALYSIS")
+
+country_analysis = clean_df["country"].value_counts()
+
+print("\nTop 10 Countries:")
+print(country_analysis.head(10))
+
+print("\nCountry with Maximum Bookings:")
+print(country_analysis.idxmax())
+
+# LENGTH OF STAY ANALYSIS
+
+print("\nLENGTH OF STAY ANALYSIS")
+
+print("Average Stay Duration:",
+      round(clean_df["total_nights"].mean(), 2), "nights")
+
+print("Maximum Stay Duration:",
+      clean_df["total_nights"].max(), "nights")
+
+print("Minimum Stay Duration:",
+      clean_df["total_nights"].min(), "nights")
+
+print("\nStay Duration Distribution:")
+print(clean_df["total_nights"].value_counts().sort_index().head(15))
+
+
+# ADR (AVERAGE DAILY RATE) ANALYSIS
+
+print("\nADR ANALYSIS")
+
+print("Average ADR:", round(clean_df["adr"].mean(), 2))
+print("Median ADR:", round(clean_df["adr"].median(), 2))
+print("Minimum ADR:", clean_df["adr"].min())
+print("Maximum ADR:", clean_df["adr"].max())
+print("ADR Standard Deviation:", round(clean_df["adr"].std(), 2))
+
+# HOTEL-WISE CANCELLATION COMPARISON
+
+print("\nHOTEL-WISE CANCELLATION COMPARISON")
+
+hotel_cancellation = pd.crosstab(
+    clean_df["hotel"],
+    clean_df["is_canceled"],
+    margins=True
+)
+
+print(hotel_cancellation)
+
+# MONTH-WISE CANCELLATION ANALYSIS
+
+print("\nMONTH-WISE CANCELLATION ANALYSIS")
+
+monthly_cancellation = pd.crosstab(
+    clean_df["arrival_date_month"],
+    clean_df["is_canceled"]
+).reindex(months, fill_value=0)
+
+monthly_cancellation.columns = [
+    "Not Cancelled", "Cancelled"
+][:len(monthly_cancellation.columns)]
+
+print(monthly_cancellation)
+
+# 18. FINAL STATISTICAL SUMMARY
+
+print("\n18. FINAL STATISTICAL SUMMARY")
+
+print(clean_df.describe(include="all"))
+
+
+# FINAL ANALYSIS RESULTS
+
+print("\n---------- FINAL ANALYSIS RESULTS ----------")
+
+print("Total Bookings:", len(clean_df))
+
+print("Most Booked Hotel:",
+      clean_df["hotel"].value_counts().idxmax())
+
+print("Most Popular Month:",
+      monthly_analysis.idxmax())
+
+print("Top Booking Country:",
+      clean_df["country"].value_counts().idxmax())
+
+print("Overall Cancellation Rate:",
+      round(clean_df["is_canceled"].mean() * 100, 2), "%")
+
+print("Average ADR:",
+      round(clean_df["adr"].mean(), 2))
+
+print("Average Stay:",
+      round(clean_df["total_nights"].mean(), 2), "nights")
+
+print("Family Bookings:",
+      (clean_df["is_family"] == 1).sum())
+
+print("\nDATA ANALYSIS COMPLETED SUCCESSFULLY!")
